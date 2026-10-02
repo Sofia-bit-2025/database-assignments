@@ -1,0 +1,19 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    platform: linux/amd64
+    container_name: eventdesk-sql
+    hostname: eventdesk-sql
+
+    ports:
+      - "1433:1433"
+
+    env_file:
+      - .env
+
+    volumes:
+      - eventdesk-sql-data:/var/opt/mssql
+
+volumes:
+  eventdesk-sql-data:
+    name: eventdesk-sql-data
