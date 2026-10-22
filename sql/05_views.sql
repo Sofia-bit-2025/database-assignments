@@ -1,101 +1,89 @@
--- Database Opdracht 2
--- Campus EventDesk
--- Bestand 05: views
 
 USE CampusEventDesk;
 GO
 
-
--- View 1
--- Informatiebehoefte:
--- Een herbruikbaar overzicht van de verschillende activiteiten
--- met hun locatie, planning en capaciteit.
-
--- Waarom:
--- Activiteitgegevens komen door meerdere aanmeldingen meerdere keren
--- voor in de platte registratie.
--- DISTINCT zorgt ervoor dat iedere activiteit één keer wordt weergegeven.
-
-CREATE VIEW dbo.vw_ActiviteitOverzicht
+CREATE OR ALTER VIEW dbo.vw_ActiviteitOverzicht
 AS
 SELECT DISTINCT
     activiteitId,
     code,
     titel,
     beschrijving,
-    startmoment,
-    eindmoment,
+    publicatieStatus,
     capaciteit,
-    activiteitvorm,
     locatieId,
-    aanduiding
+    aanduiding,
+    activiteitsvormId,
+    activiteitsvormNaam,
+    geplandeMomenten
 FROM dbo.EventDeskRegistratie;
 GO
 
-
--- Test View 1
--- Controleert of het activiteitsoverzicht correcte
--- en unieke activiteiten teruggeeft.
-
-SELECT *
-FROM dbo.vw_ActiviteitOverzicht
-ORDER BY startmoment;
-GO
-
-
--- View 2
--- Informatiebehoefte:
--- Een herbruikbaar overzicht van aanmeldingen
--- met hun deelnamevorm en eventuele betaling.
-
--- Waarom:
--- De view brengt aanmeldings- en betaalgegevens samen
--- in één herbruikbaar overzicht.
--- Betaling is optioneel, daarom kunnen betalingId
--- en betaalstatus NULL zijn.
-
-CREATE VIEW dbo.vw_BetaalOverzicht
+CREATE OR ALTER VIEW dbo.vw_BetaalOverzicht
 AS
 SELECT
+    aanmeldingId,
     persoonId,
-    naam,
+    persoonNaam,
     activiteitId,
     titel,
     aanmelddatum,
+    status,
     deelnamevormId,
     deelnamevormNaam,
     betalingId,
     betaalstatus
-FROM dbo.EventDeskRegistratie;
+FROM dbo.EventDeskRegistratie
+WHERE aanmeldingId IS NOT NULL;
 GO
 
+SELECT
+    activiteitId,
+    code,
+    titel,
+    publicatieStatus,
+    capaciteit,
+    aanduiding,
+    activiteitsvormNaam,
+    geplandeMomenten
+FROM dbo.vw_ActiviteitOverzicht
+ORDER BY activiteitId;
+GO
 
--- Test View 2
--- Controleert of alle aanmeldingen met hun
--- deelnamevorm en eventuele betaling worden weergegeven.
+SELECT
+    aanmeldingId,
+    persoonNaam,
+    activiteitId,
+    status,
+    deelnamevormNaam,
+    betalingId,
+    betaalstatus
+FROM dbo.vw_BetaalOverzicht
+ORDER BY aanmelddatum, aanmeldingId;
+GO
+
+SELECT
+    (SELECT COUNT(*)
+     FROM dbo.vw_ActiviteitOverzicht) AS aantalActiviteiten,
+    (SELECT COUNT(*)
+     FROM dbo.vw_BetaalOverzicht) AS aantalAanmeldingen,
+    (SELECT COUNT(*)
+     FROM dbo.vw_BetaalOverzicht
+     WHERE betalingId IS NOT NULL) AS aantalMetBetaling,
+    (SELECT COUNT(*)
+     FROM dbo.vw_BetaalOverzicht
+     WHERE betalingId IS NULL) AS aantalZonderBetaling;
+GO
+
+SELECT
+    activiteitId,
+    COUNT(*) AS aantal
+FROM dbo.vw_ActiviteitOverzicht
+GROUP BY activiteitId
+HAVING COUNT(*) > 1;
+GO
 
 SELECT *
 FROM dbo.vw_BetaalOverzicht
-ORDER BY aanmelddatum;
+WHERE aanmeldingId IS NULL;
 GO
-
-
-/*
-
-vw_ActiviteitOverzicht
-- geeft een herbruikbaar overzicht van unieke activiteiten;
-- bevat locatie, planning en capaciteit;
-- voorkomt dubbele activiteiten uit de platte registratie
-  door DISTINCT te gebruiken.
-
-vw_BetaalOverzicht
-- geeft een herbruikbaar overzicht van aanmeldingen,
-  deelnamevormen en betalingen;
-- laat zowel aanwezige als ontbrekende betalingen zien;
-- betalingId en betaalstatus kunnen NULL zijn
-  wanneer geen betaling aanwezig is.
-
-Testresultaten:
-vw_ActiviteitOverzicht :4 unieke activiteiten
-vw_BetaalOverzicht     :12 aanmeldingen
-*/
