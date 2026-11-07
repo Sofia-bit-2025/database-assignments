@@ -1,3 +1,4 @@
+
 USE CampusEventDesk_Opdracht3;
 GO
 
@@ -7,21 +8,40 @@ SELECT
 FROM INFORMATION_SCHEMA.TABLES
 WHERE TABLE_TYPE = 'BASE TABLE'
 ORDER BY TABLE_SCHEMA, TABLE_NAME;
-
-USE CampusEventDesk_Opdracht3;
 GO
 
-SELECT 'Organisatie' AS tabel, COUNT(*) AS aantalRecords FROM dbo.Organisatie
-UNION ALL
-SELECT 'Persoon', COUNT(*) FROM dbo.Persoon
-UNION ALL
-SELECT 'Activiteit', COUNT(*) FROM dbo.Activiteit
-UNION ALL
-SELECT 'Aanmelding', COUNT(*) FROM dbo.Aanmelding
-UNION ALL
-SELECT 'Betaling', COUNT(*) FROM dbo.Betaling;
+SELECT
+    'Organisatie' AS tabel,
+    COUNT(*) AS aantalRecords
+FROM dbo.Organisatie
 
-USE CampusEventDesk_Opdracht3;
+UNION ALL
+
+SELECT
+    'Persoon',
+    COUNT(*)
+FROM dbo.Persoon
+
+UNION ALL
+
+SELECT
+    'Activiteit',
+    COUNT(*)
+FROM dbo.Activiteit
+
+UNION ALL
+
+SELECT
+    'Aanmelding',
+    COUNT(*)
+FROM dbo.Aanmelding
+
+UNION ALL
+
+SELECT
+    'Betaling',
+    COUNT(*)
+FROM dbo.Betaling;
 GO
 
 SELECT
@@ -33,3 +53,4 @@ INNER JOIN sys.partitions AS p
 WHERE p.index_id IN (0, 1)
 GROUP BY t.name
 ORDER BY t.name;
+GO
