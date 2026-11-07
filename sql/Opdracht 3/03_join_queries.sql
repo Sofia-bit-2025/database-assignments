@@ -2,6 +2,9 @@
 USE CampusEventDesk_Opdracht3;
 GO
 
+-- Vraag 1:
+-- Welke deelnemers hebben zich voor welke activiteiten aangemeld
+-- en wat is hun aanmeldstatus?
 SELECT
     AM.aanmeldingId,
     P.persoonId,
@@ -19,6 +22,8 @@ INNER JOIN dbo.Activiteit AS A
 ORDER BY AM.aanmeldingId;
 GO
 
+-- Vraag 2:
+-- Welke deelnamevorm hoort bij iedere aanmelding?
 SELECT
     AM.aanmeldingId,
     P.naam AS deelnemer,
@@ -36,6 +41,9 @@ INNER JOIN dbo.DeelnameVorm AS DV
 ORDER BY AM.aanmeldingId;
 GO
 
+-- Vraag 3:
+-- Welke activiteiten hebben geplande momenten
+-- en wat zijn de locatie vorm en begin en eindtijd ervan?
 SELECT
     A.code AS activiteitCode,
     A.titel AS activiteit,
@@ -54,6 +62,9 @@ INNER JOIN dbo.ActiviteitMoment AS M
 ORDER BY A.code, M.startDatumTijd, M.momentId;
 GO
 
+-- Vraag 4:
+-- Welke activiteiten hebben aanmeldingen
+-- inclusief activiteiten waar  niemand is voor aangemeld?
 SELECT
     A.code AS activiteitCode,
     A.titel AS activiteit,
@@ -66,6 +77,9 @@ LEFT JOIN dbo.Aanmelding AS AM
 ORDER BY A.code, AM.aanmeldingId;
 GO
 
+-- Vraag 5:
+-- Welke aanmeldingen hebben wel of geen betaling
+-- en wat is de betaalstatus?
 SELECT
     AM.aanmeldingId,
     P.naam AS deelnemer,
@@ -87,6 +101,9 @@ LEFT JOIN dbo.Betaling AS B
 ORDER BY AM.aanmeldingId;
 GO
 
+-- Vraag 6:
+-- Welke activiteiten hebben een vervolgactiviteit
+-- en welke activiteit is dat?
 SELECT
     O.code AS oorspronkelijkeCode,
     O.titel AS oorspronkelijkeActiviteit,
@@ -98,6 +115,9 @@ INNER JOIN dbo.Activiteit AS V
 ORDER BY O.code, V.code;
 GO
 
+-- Vraag 7:
+-- Hoeveel aanmeldpogingen zijn er per activiteit
+-- inclusief activiteiten zonder aanmeldingen?
 SELECT
     A.code AS activiteitCode,
     A.titel AS activiteit,
@@ -109,6 +129,9 @@ GROUP BY A.activiteitId, A.code, A.titel
 ORDER BY A.code;
 GO
 
+-- vraag 8:
+-- Welke deelnamevormen hebben meer dan drie aanmeldpogingen
+-- en hoeveel aanmeldpogingen zijn dat?
 SELECT
     DV.deelnamevormId,
     DV.naam AS deelnamevorm,
