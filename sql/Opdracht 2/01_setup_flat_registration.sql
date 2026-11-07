@@ -1,4 +1,3 @@
-
 IF DB_ID(N'CampusEventDesk') IS NULL
     EXEC(N'CREATE DATABASE CampusEventDesk');
 GO
