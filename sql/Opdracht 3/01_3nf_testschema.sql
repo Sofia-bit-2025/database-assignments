@@ -165,7 +165,7 @@ CREATE TABLE dbo.ActiviteitVoorwaarde (
     voorwaardeActiviteitId VARCHAR(10) NOT NULL
         REFERENCES dbo.Activiteit(activiteitId),
 
-    PRIMARY KEY (activiteitId),
+    PRIMARY KEY (activiteitId, voorwaardeActiviteitId),
 
     CONSTRAINT CK_Voorwaarde_NietZelf CHECK (
         activiteitId <> voorwaardeActiviteitId
@@ -222,4 +222,3 @@ WHERE status IN (
     'bevestigd'
 );
 GO
-t
