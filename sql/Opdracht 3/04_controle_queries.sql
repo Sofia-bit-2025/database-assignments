@@ -381,6 +381,20 @@ SELECT CASE
 END AS resultaat;
 GO
 
+SELECT
+    AM.aanmeldingId,
+    AM.status,
+    AM.reserveringVervaltOp,
+    CASE
+        WHEN AM.reserveringVervaltOp <= SYSDATETIME()
+        THEN 'VERLOPEN'
+        ELSE 'NIET_VERLOPEN'
+    END AS reserveringSituatie
+FROM dbo.Aanmelding AS AM
+WHERE AM.status = 'betaling_in_afwachting'
+ORDER BY AM.aanmeldingId;
+GO
+
 IF DB_ID(N'CampusEventDesk') IS NOT NULL
    AND OBJECT_ID(N'CampusEventDesk.dbo.EventDeskRegistratie', N'U') IS NOT NULL
 BEGIN
@@ -419,4 +433,3 @@ BEGIN
            N'Originele tabel CampusEventDesk.dbo.EventDeskRegistratie is niet beschikbaar.' AS reden;
 END;
 GO
-
