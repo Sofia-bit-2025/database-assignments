@@ -1,12 +1,13 @@
-IF DB_ID(N'CampusEventDesk') IS NULL
-    EXEC(N'CREATE DATABASE CampusEventDesk');
+USE [master];
 GO
 
-USE CampusEventDesk;
+IF DB_ID(N'CampusEventDesk_Opdracht2') IS NULL
+BEGIN
+    CREATE DATABASE [CampusEventDesk_Opdracht2];
+END;
 GO
 
-IF OBJECT_ID(N'dbo.EventDeskRegistratie', N'U') IS NOT NULL
-    THROW 50001, N'EventDeskRegistratie bestaat al. Maak eerst een back-up en controleer de bestaande structuur.', 1;
+USE [CampusEventDesk_Opdracht2];
 GO
 
 CREATE TABLE dbo.EventDeskRegistratie

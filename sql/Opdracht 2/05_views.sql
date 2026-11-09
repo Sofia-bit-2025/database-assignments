@@ -1,5 +1,5 @@
 
-USE CampusEventDesk;
+USE CampusEventDesk_Opdracht2;
 GO
 
 CREATE OR ALTER VIEW dbo.vw_ActiviteitOverzicht

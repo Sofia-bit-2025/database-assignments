@@ -4,6 +4,7 @@ services:
     platform: linux/amd64
     container_name: eventdesk-sql
     hostname: eventdesk-sql
+    restart: unless-stopped
 
     ports:
       - "1433:1433"

@@ -222,3 +222,4 @@ WHERE status IN (
     'bevestigd'
 );
 GO
+

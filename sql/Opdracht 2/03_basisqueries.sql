@@ -1,4 +1,4 @@
-USE CampusEventDesk;
+USE CampusEventDesk_Opdracht2;
 GO
 
 SELECT DISTINCT

@@ -1,4 +1,4 @@
-USE CampusEventDesk;
+USE CampusEventDesk_Opdracht2;
 GO
 
 SET XACT_ABORT ON;
